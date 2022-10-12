@@ -9,6 +9,7 @@ services:
     sizeGB: 10 #Feel free to change this to suit your needs.
   envVars:
     - fromGroup: mysql
+    - fromGroup: ghost
 
 - type: pserv
   name: mysql
@@ -24,6 +25,21 @@ services:
     - fromGroup: mysql
 
 envVarGroups:
+  - name: ghost
+    envVars:
+      - database__client:
+        value: mysql
+      - database__connection__host:
+        fromSevice:
+          type: pserv
+          name: mysql
+          property: host
+      - database__connection__database:
+        value: mysql
+      - database__connection__user:
+        value: mysql
+      - database__connection__password:
+        sync: false
   - name: mysql
     envVars:
       - key: MYSQL_DATABASE
